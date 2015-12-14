@@ -6,8 +6,10 @@ A simple cookbook for adding users to a FreeBSD node.
 
 Users are added from a
 data bag directory. Users settings are configured in a json file in the
-data bags directory set in the attributes for this cookbook. The default data
-bags directory is *users*. A simple example foobar user is shown below:
+data bags directory; the name of the data bag directory is set in the 
+attributes for this cookbook. The default data
+bags directory is *users*. A simple example foobar user is shown below. This
+file would be located at `data_bags/users/foobar.json`.
 
     {
       "id": "foobar",
