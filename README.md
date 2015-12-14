@@ -26,4 +26,11 @@ file would be located at `data_bags/users/foobar.json`.
 
 The user foobar above will be put in the "wheel" group, have bash as the
 default shell, and have a home directory created at `/home/foobar`.
-Additionally, a hashed password is set, and two ssh public keys are added.
+Additionally, a hashed password is set, and two ssh public keys are added. Of
+course, actual ssh keys would be longer and look random.
+
+## Vim
+
+The vim recipe in this cookbook installs vim, and then adds the vimrc file
+to each user from the data bags home directory. The vimrc file is specified in
+the cookbook attributes and located in the `files/default` folder of the cookbook.
