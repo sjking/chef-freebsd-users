@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-users = data_bag(node['chef_nix_users']['data_bag-dir'])
+users = data_bag(node['chef_freebsd_users']['data_bag-dir'])
 
 users.each do |login|
   user = data_bag_item('users', login)
@@ -35,7 +35,7 @@ users.each do |login|
     shell user['shell']
     password user['password']
     notifies :create, 'directory[create-home-directory]', :immediately
-    notifies :add, 'chef_nix_users_groupmod[add-user-to-groups]', :immediately
+    notifies :add, 'chef_freebsd_users_groupmod[add-user-to-groups]', :immediately
   end
 
   directory 'create-home-directory' do
