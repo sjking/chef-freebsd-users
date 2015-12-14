@@ -65,7 +65,7 @@ users.each do |login|
     action :nothing
   end
 
-  chef_nix_users_groupmod 'add-user-to-groups' do
+  chef_freebsd_users_groupmod 'add-user-to-groups' do
     user user['id']
     groups user['groups']
     action :nothing
