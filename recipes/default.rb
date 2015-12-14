@@ -24,3 +24,50 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+users = data_bag(node['chef_nix_users']['data_bag-dir'])
+
+users.each do |login|
+  user = data_bag_item('users', login)
+
+  user login do
+    comment user['comment']
+    home user['home']
+    shell user['shell']
+    password user['password']
+    notifies :create, 'directory[create-home-directory]', :immediately
+    notifies :add, 'chef_nix_users_groupmod[add-user-to-groups]', :immediately
+  end
+
+  directory 'create-home-directory' do
+    path "#{user['home']}"
+    owner user['id']
+    group user['id']
+    mode '0755'
+    action :nothing
+    notifies :create, 'directory[create-ssh-directory]', :immediately
+  end
+
+  directory 'create-ssh-directory' do
+    path "#{user['home']}/.ssh"
+    owner user['id']
+    group user['id']
+    mode '0700'
+    action :nothing
+    notifies :create, 'file[create-authorized-keys-file]', :immediately
+  end
+
+  file 'create-authorized-keys-file' do
+    content user['ssh_keys'].join("\n")
+    path "#{user['home']}/.ssh/authorized_keys"
+    mode '0600'
+    owner user['id']
+    group user['id']
+    action :nothing
+  end
+
+  chef_nix_users_groupmod 'add-user-to-groups' do
+    user user['id']
+    groups user['groups']
+    action :nothing
+  end
+end
