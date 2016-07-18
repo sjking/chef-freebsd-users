@@ -34,8 +34,6 @@ users.each do |login|
     home user['home']
     shell user['shell']
     password user['password']
-    notifies :create, 'directory[create-home-directory]', :immediately
-    notifies :add, 'chef_freebsd_users_groupmod[add-user-to-groups]', :immediately
   end
 
   directory 'create-home-directory' do
@@ -43,8 +41,6 @@ users.each do |login|
     owner user['id']
     group user['id']
     mode '0755'
-    action :nothing
-    notifies :create, 'directory[create-ssh-directory]', :immediately
   end
 
   directory 'create-ssh-directory' do
@@ -52,8 +48,6 @@ users.each do |login|
     owner user['id']
     group user['id']
     mode '0700'
-    action :nothing
-    notifies :create, 'file[create-authorized-keys-file]', :immediately
   end
 
   file 'create-authorized-keys-file' do
@@ -62,12 +56,10 @@ users.each do |login|
     mode '0600'
     owner user['id']
     group user['id']
-    action :nothing
   end
 
   chef_freebsd_users_groupmod 'add-user-to-groups' do
     user user['id']
     groups user['groups']
-    action :nothing
   end
 end
